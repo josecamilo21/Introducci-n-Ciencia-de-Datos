@@ -1,44 +1,35 @@
 # Introducción a Ciencia de Datos 📊
 
-Bienvenido a este repositorio. Aquí se encuentran centralizados todos los materiales, notebooks y conjuntos de datos desarrollados durante la materia **Introducción a Ciencia de Datos**.
-
-El objetivo principal es mantener un registro organizado de las prácticas y facilitar el acceso a los recursos educativos del curso.
+Este repositorio centraliza los materiales, ejercicios y bases de datos desarrollados durante el curso de **Introducción a Ciencia de Datos**.
 
 ---
 
-## 📂 Contenido del Repositorio
+## 📂 Estructura de Clases y Materiales
 
-El repositorio está estructurado de la siguiente manera:
+Aquí encontrarás acceso directo a los contenidos principales organizados por sesiones:
 
-* **Notebooks (`/notebooks`):** Guías interactivas en Python (compatibles con Google Colab).
-* **Data (`/data`):** Archivos en formato CSV y Excel utilizados para el entrenamiento y análisis.
-* **Material de Clase:** Notas teóricas y presentaciones de apoyo.
-* **Ejercicios:** Desafíos prácticos de análisis de datos aplicados.
+### 📒 Sesiones de Trabajo (Notebooks)
+* [📁 Clase 4](Clase%204) - Fundamentos y prácticas iniciales.
+* [📁 Clase 5](Clase%205) - Continuación de conceptos estadísticos.
+* [📁 Clase Numpy](Clase%20Numpy) - Operaciones matriciales y numéricas.
+* [📁 Clase 6](Clase_6) - Ejercicios avanzados.
+* [🐍 Ejercicio Ciencia de Datos](Ejercicio_Ciencia_de_Datos.ipynb) - Notebook principal de análisis.
 
----
-
-## 🛠️ Herramientas y Tecnologías
-
-Para el desarrollo de este curso se utilizaron las siguientes herramientas:
-
-| Herramienta | Uso Principal |
-| :--- | :--- |
-| **Python** | Lenguaje de programación base. |
-| **Jupyter / Colab** | Entorno de desarrollo para notebooks. |
-| **Pandas** | Manipulación y limpieza de estructuras de datos. |
-| **NumPy** | Cálculo numérico y manejo de matrices. |
-| **CSV/Excel** | Orígenes de datos para las prácticas. |
+### 📊 Conjuntos de Datos (Datasets)
+* [📄 Customers Data (CSV)](customers_1.csv)
+* [📄 Default of Credit Card Clients (XLS)](default%20of%20credit%20card%20clients.xls)
 
 ---
 
-## 🎯 Objetivo
+## 🛠️ Herramientas Utilizadas
 
-Organizar, documentar y compartir el progreso académico en el área de Ciencia de Datos, permitiendo una consulta rápida de los algoritmos y análisis realizados en clase.
+* **Python:** Lenguaje principal.
+* **Bibliotecas:** Pandas, NumPy, Matplotlib.
+* **Entornos:** Google Colab / Jupyter Notebooks.
 
 ---
 
 ## 👤 Autor
 
-* **Jose Camilo Zambrano Jaimes**
-* *Estudiante de Ciencia de Datos*
-* [Email](jzambrano696@unab.edu.co)
+**Jose Camilo Zambrano Jaimes**
+*Ciencia de Datos*
