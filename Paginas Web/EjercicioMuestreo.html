@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadística Interactiva: TCL</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --bg: #f8fafc;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card);
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Estilo de Pestañas */
+        .tabs {
+            display: flex;
+            background: #e2e8f0;
+            border-bottom: 2px solid #cbd5e1;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 15px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--secondary);
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+            background: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilos de contenido */
+        h2 { color: var(--primary); margin-top: 0; }
+        code { background: #1e293b; color: #f8fafc; padding: 15px; border-radius: 8px; display: block; overflow-x: auto; font-family: 'Consolas', monospace; line-height: 1.5; }
+        .data-box { background: #f1f5f9; border-left: 5px solid var(--primary); padding: 15px; margin: 15px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #f8fafc; }
+        
+        .canvas-container { position: relative; height: 300px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'enunciado')">Enunciado</button>
+        <button class="tab-btn" onclick="openTab(event, 'teoria')">Teoría</button>
+        <button class="tab-btn" onclick="openTab(event, 'desarrollo')">Desarrollo</button>
+        <button class="tab-btn" onclick="openTab(event, 'python')">Python</button>
+        <button class="tab-btn" onclick="openTab(event, 'analisis')">Análisis</button>
+    </nav>
+
+    <div id="enunciado" class="tab-content active">
+        <h2>Elección del Ejercicio</h2>
+        <p>Suponga una población finita consistente en los valores <strong>{0, 2, 4, 6, 8}</strong>. Se desea realizar un muestreo aleatorio con reemplazo de tamaño <strong>n=2</strong>.</p>
+        <div class="data-box">
+            <strong>Objetivo:</strong> Demostrar que la distribución muestral de las medias tiende a una forma acampanada (normal), a pesar de que la población original es uniforme.
+        </div>
+        <h3>Datos de la población:</h3>
+        <ul>
+            <li>Valores (X): 0, 2, 4, 6, 8</li>
+            <li>Frecuencia: Cada valor tiene una probabilidad de 1/5 (0.2).</li>
+        </ul>
+    </div>
+
+    <div id="teoria" class="tab-content">
+        <h2>Teoría Relacionada</h2>
+        <p>El proceso se basa en dos pilares de la estadística inferencial:</p>
+        <ul>
+            <li><strong>Muestreo Aleatorio:</strong> Proceso de elección donde todos los individuos tienen la misma probabilidad de ser seleccionados.</li>
+            <li><strong>Teorema Central del Límite (TCL):</strong> Establece que, independientemente de la forma de la población original, la distribución de las medias muestrales se aproximará a una normal a medida que <em>n</em> aumenta.</li>
+        </ul>
+        <p>Aunque el TCL suele aplicarse con <em>n ≥ 30</em>, en este ejercicio veremos cómo la forma empieza a cambiar incluso con <em>n=2</em>.</p>
+    </div>
+
+    <div id="desarrollo" class="tab-content">
+        <h2>Desarrollo Estadístico</h2>
+        <p>1. <strong>Parámetros Poblacionales:</strong></p>
+        <ul>
+            <li>Media (μ): (0+2+4+6+8)/5 = <strong>4</strong></li>
+            <li>Varianza (σ²): <strong>8</strong></li>
+        </ul>
+        <p>2. <strong>Muestreo (n=2):</strong> Al ser con reemplazo, existen 5² = <strong>25 combinaciones</strong> posibles.</p>
+        <button onclick="generarSimulacion()" style="padding:10px; cursor:pointer">Generar Distribución de Medias</button>
+        <div class="canvas-container">
+            <canvas id="chartMedias"></canvas>
+        </div>
+    </div>
+
+    <div id="python" class="tab-content">
+        <h2>Código en Python</h2>
+        <p>Simulación profesional utilizando <code>numpy</code> y <code>matplotlib</code>:</p>
+        <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+import random
+
+# 1. Definir la población
+poblacion = [0, 2, 4, 6, 8]
+
+# 2. Configuración
+n = 30  # Tamaño para TCL pleno
+num_muestras = 10000
+medias_muestrales = []
+
+for _ in range(num_muestras):
+    muestra = [random.choice(poblacion) for _ in range(n)]
+    medias_muestrales.append(np.mean(muestra))
+
+# 3. Visualización
+plt.hist(medias_muestrales, bins=30, color='skyblue', edgecolor='black')
+plt.title("Distribución de Medias Muestrales (TCL)")
+plt.show()</code></pre>
+    </div>
+
+    <div id="analisis" class="tab-content">
+        <h2>Análisis Final</h2>
+        <table>
+            <tr><th>Observación</th><th>Resultado</th></tr>
+            <tr><td>Cambio de Forma</td><td>De Uniforme a Campana (Normal).</td></tr>
+            <tr><td>Validación Media</td><td>La media de las medias es 4.0 (Igual a μ).</td></tr>
+            <tr><td>Dispersión</td><td>El error estándar se reduce según σ/√n.</td></tr>
+        </table>
+        <p><strong>Conclusión:</strong> No necesitamos que la población sea normal para realizar inferencias sobre su media, siempre que el tamaño de muestra sea adecuado.</p>
+    </div>
+</div>
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+            tabcontent[i].classList.remove("active");
+        }
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.className += " active";
+    }
+
+    let miGrafico;
+    function generarSimulacion() {
+        const etiquetas = ['0','1','2','3','4','5','6','7','8'];
+        const datos = [1, 2, 3, 4, 5, 4, 3, 2, 1]; // Frecuencias teóricas de las medias para n=2
+
+        const ctx = document.getElementById('chartMedias').getContext('2d');
+        if (miGrafico) miGrafico.destroy();
+        
+        miGrafico = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: etiquetas,
+                datasets: [{
+                    label: 'Frecuencia de Medias Muestrales',
+                    data: datos,
+                    backgroundColor: 'rgba(37, 99, 235, 0.6)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
